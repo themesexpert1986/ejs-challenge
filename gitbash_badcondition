@@ -1,0 +1,21 @@
+#!/bin/bash
+clear
+echo "uploading Initing Ejs Challenge ..."
+
+git add .
+
+
+if [ "$#" -eq  "0" ]
+   then
+     git commit -m "
+git commit default
+ "
+ else
+     git commit -m "$1"
+ fi
+
+git push origin master
+
+clear
+
+echo "push done - Vinhnx !!!! Happy to Commit Files  "
