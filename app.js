@@ -27,8 +27,12 @@ app.get('/', function(req, res) {
 });
 
 app.post('/compose', function(req, res) {
-  // console.log("Hello world");
-  console.log(req.body.postTitle);
+  const post = {
+    'title': req.body.postTitle,
+    'content': req.body.postBody
+  }
+
+
 });
 
 app.get('/about', function(req, res) {
