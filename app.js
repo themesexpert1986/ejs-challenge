@@ -32,6 +32,8 @@ app.post('/compose', function(req, res) {
     'content': req.body.postBody
   }
 
+  console.log(post);
+  res.redirect('/');
 
 });
 
