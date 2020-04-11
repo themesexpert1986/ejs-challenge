@@ -1,5 +1,6 @@
 //jshint esversion:6
-
+// Load the full build.
+var _ = require('lodash');
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -55,16 +56,22 @@ app.get('/compose', function(req, res) {
 });
 
 app.get('/posts/:postName', function(req, res) {
-  const requestTitle = req.params.postName;
-  // console.log(postNametoMatch);
 
+  const requestTitle = _.lowerCase(req.params.postName);
+  // console.log(req.params.postName);
   posts.forEach(function(post) {
-    var storedTitle = postTitle;
+
+    var storedTitle = post.title;
+    storedTitle = _.lowerCase(storedTitle);
+    // Another Post ==> another post
+    console.log("StoreTitle:" + storedTitle);
+
     if (storedTitle === requestTitle) {
       console.log(" It's Matched !");
     } else {
-      console.log(" Not Found !");
+      console.log(" Not Match !");
     }
+
   });
 
 });
