@@ -55,11 +55,12 @@ app.get('/compose', function(req, res) {
 });
 
 app.get('/posts/:postName', function(req, res) {
-  let postNametoMatch = req.params.postName;
-  console.log(postNametoMatch);
-  
+  const requestTitle = req.params.postName;
+  // console.log(postNametoMatch);
+
   posts.forEach(function(post) {
-    if (post.title == postNametoMatch) {
+    var storedTitle = postTitle;
+    if (storedTitle === requestTitle) {
       console.log(" It's Matched !");
     } else {
       console.log(" Not Found !");
@@ -67,7 +68,6 @@ app.get('/posts/:postName', function(req, res) {
   });
 
 });
-
 
 app.listen(3000, function() {
   console.log("Server started on port 3000");
