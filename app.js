@@ -61,18 +61,20 @@ app.get('/posts/:postName', function(req, res) {
   // console.log(req.params.postName);
   posts.forEach(function(post) {
 
-    var storedTitle = post.title;
-    storedTitle = _.lowerCase(storedTitle);
-    // Another Post ==> another post
-    console.log("StoreTitle:" + storedTitle);
+    const storedTitle = _.lowerCase(post.title);
 
     if (storedTitle === requestTitle) {
-      console.log(" It's Matched !");
-    } else {
-      console.log(" Not Match !");
+      // console.log(" It's Matched !");
+      res.render('post', {
+        title: post.title,
+        content: post.content
+      });
+
     }
 
   });
+
+
 
 });
 
