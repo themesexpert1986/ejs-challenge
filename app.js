@@ -54,8 +54,8 @@ app.get('/compose', function(req, res) {
   res.render('compose');
 });
 
-app.get('/posts/:item',function(req,res){
-    console.log(req.params.item);
+app.get('/posts/:postName',function(req,res){
+    console.log(req.params.postName);
 });
 
 
