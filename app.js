@@ -4,6 +4,36 @@ var _ = require('lodash');
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
+const mongoose = require('mongoose');
+
+//mongodb://localhost:27017/todolistDB
+mongoose.connect('mongodb://localhost:27017/blog', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+// Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
+// by default, you need to set it to false.
+mongoose.set('useFindAndModify', false);
+
+const postSchema = mongoose.Schema({
+  title: String,
+  content: String
+});
+
+const Post = mongoose.model("Post", postSchema);
+
+const day1 = new Post({
+  title: "day 1",
+  content: "Lacus vel facilisis volutpat est velit egestas dui id ornare."
+});
+
+const day2 = new Post({
+  title: "day 2",
+  content: "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque."
+});
+
+// Post.insertMany([day1,day2]);
+
 
 const homeStartingContent = "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.";
 const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
@@ -20,22 +50,36 @@ app.use(bodyParser.urlencoded({
 app.use(express.static("public"));
 
 app.get('/', function(req, res) {
-  // console.log(posts);
-  res.render('home', {
-    startingContent: homeStartingContent,
-    posts: posts
+
+  Post.find({}, function(err, posts) {
+    if (!err) {
+
+      res.render('home', {
+        startingContent: homeStartingContent,
+        posts: posts
+      });
+    }
+
   });
+
 
 });
 
 app.post('/compose', function(req, res) {
-  const post = {
+
+  const post = new Post({
     'title': req.body.postTitle,
     'content': req.body.postBody
-  }
+  });
 
-  posts.push(post);
-  res.redirect('/');
+  post.save(function(err) {
+    if (!err) {
+      res.redirect('/');
+    } else {
+      console.log(err);
+    }
+  });
+
 
 });
 
@@ -59,19 +103,20 @@ app.get('/posts/:postName', function(req, res) {
 
   const requestTitle = _.lowerCase(req.params.postName);
   // console.log(req.params.postName);
-  posts.forEach(function(post) {
-
-    const storedTitle = _.lowerCase(post.title);
-
-    if (storedTitle === requestTitle) {
-      // console.log(" It's Matched !");
-      res.render('post', {
-        title: post.title,
-        content: post.content
+  Post.find({}, function(err, posts) {
+    if (!err) {
+      posts.forEach(function(post) {
+        const storedTitle = _.lowerCase(post.title);
+        if (storedTitle === requestTitle) {
+          // console.log(" It's Matched !");
+          res.render('post', {
+            title: post.title,
+            content: post.content
+          });
+        }
       });
 
     }
-
   });
 
 
