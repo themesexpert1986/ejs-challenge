@@ -1,1 +1,10 @@
+** Permission 
+sudo chown apple /usr/local/var/mongodb
+sudo chown apple /usr/local/var/log/mongodb
 
+mongod --dbpath /usr/local/var/mongodb --logpath /usr/local/var/log/mongodb/mongo.log --fork
+
+
+Password Mongo Atlas: .[v57XHW5ATxd)gW
+String to Command Line: mongo "mongodb+srv://cluster0-jroxr.mongodb.net/test"  --username admin
+String for Application: mongodb+srv://admin:<password>@cluster0-jroxr.mongodb.net/test?retryWrites=true&w=majority
