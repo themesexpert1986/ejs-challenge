@@ -17,18 +17,11 @@
       return str;
     }
   };
-  function convertToSlug(Text)
-{
-    return Text
-        .toLowerCase()
-        .replace(/ /g,'-')
-        .replace(/[^\w-]+/g,'')
-        ;
-}
+
   posts.forEach((post, index) => {
 %>
 <h1><%= post.title %></h1>
-<p> <%= text_truncate (post.content,100,'...') %> <a href="/<%= 'posts/'+convertToSlug(post.title); %>"> Read More </a></p>
+<p> <%= text_truncate (post.content,100,'...') %> <a href="/<%= 'posts/'+(post._id); %>"> Read More </a></p>
 <%
   });
 

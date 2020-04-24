@@ -53,7 +53,7 @@ app.get('/', function(req, res) {
 
   Post.find({}, function(err, posts) {
     if (!err) {
-
+      console.log(posts);
       res.render('home', {
         startingContent: homeStartingContent,
         posts: posts
@@ -99,21 +99,20 @@ app.get('/compose', function(req, res) {
   res.render('compose');
 });
 
-app.get('/posts/:postName', function(req, res) {
+app.get('/posts/:postId', function(req, res) {
 
-  const requestTitle = _.lowerCase(req.params.postName);
-  // console.log(req.params.postName);
-  Post.find({}, function(err, posts) {
+  const postId = req.params.postId;
+
+  Post.find({
+    _id: postId
+  }, function(err, posts) {
     if (!err) {
       posts.forEach(function(post) {
-        const storedTitle = _.lowerCase(post.title);
-        if (storedTitle === requestTitle) {
-          // console.log(" It's Matched !");
-          res.render('post', {
-            title: post.title,
-            content: post.content
-          });
-        }
+        res.render('post', {
+          title: post.title,
+          content: post.content
+        });
+
       });
 
     }
